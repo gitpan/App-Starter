@@ -21,4 +21,4 @@ requires:
   Template: 0
   Test::More: 0
   YAML::Syck: 0
-version: 0.07
+version: 0.08
