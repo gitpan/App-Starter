@@ -1,0 +1,4 @@
+'Model::DB' :
+    connect_info :
+        - 'dbi:mysql:dbname=[* __appprefix__ *]'
+        - 'tomyhero'

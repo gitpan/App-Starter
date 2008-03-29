@@ -1,0 +1,6 @@
+from    : /home/tomyhero/work/tomyhero-private/coderepos/App-Starter/trunk/sample/skel/app-catalyst
+tag_style : star
+ignore  :
+    - \.svn
+    - \.cvs
+replace :
