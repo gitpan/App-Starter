@@ -1,4 +1,4 @@
-#!/usr/bin/perl 
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -19,7 +19,7 @@ __END__
 
 app-script.pl - App::Starter script file.
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  app-script.pl --config conf/your-config.yml --name my_application
 
@@ -36,6 +36,4 @@ L<App::Starter>
 Tomohiro Teranishi
 
 =cut
-
-
 

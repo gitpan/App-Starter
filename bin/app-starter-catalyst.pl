@@ -1,4 +1,4 @@
-#!/usr/bin/perl 
+#!/usr/bin/perl
 
 use strict;
 use warnings;
@@ -14,9 +14,9 @@ __END__
 
 =head1 NAME
 
-app-starter-catalyst.pl - App::Starter script file.
+app-starter-catalyst.pl - App::Starter script file for catalyst.
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
  app-starter-catalyst.pl --template  --name MyApp
 
@@ -33,6 +33,4 @@ L<App::Starter>
 Tomohiro Teranishi
 
 =cut
-
-
 

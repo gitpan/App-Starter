@@ -12,7 +12,7 @@ use Template;
 use IO::All;
 use base qw/Class::Accessor/;
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 my $DIR = {};
 
@@ -37,14 +37,23 @@ sub create {
             $config->{template} );
 
         my $conf_file = '';
-        if (-e  File::Spec->catfile( $ENV{HOME}, '/.app-starter/conf', $config->{template} . '.yml' ) ) {
-            $conf_file =  File::Spec->catfile( $ENV{HOME}, '/.app-starter/conf', $config->{template} . '.yml' ) ;    
+        if (-e File::Spec->catfile(
+                $ENV{HOME}, '/.app-starter/conf',
+                $config->{template} . '.yml'
+            )
+            )
+        {
+            $conf_file
+                = File::Spec->catfile( $ENV{HOME}, '/.app-starter/conf',
+                $config->{template} . '.yml' );
         }
         else {
-            $conf_file = File::Spec->catfile(  $ENV{HOME}, '/.app-starter/conf', $config->{template} . '.yaml' );
+            $conf_file
+                = File::Spec->catfile( $ENV{HOME}, '/.app-starter/conf',
+                $config->{template} . '.yaml' );
         }
 
-        $self->{config} = $conf_file ;
+        $self->{config} = $conf_file;
     }
 
     if ( $self->{config} ) {
@@ -111,12 +120,12 @@ sub _wanted {
 
     if ( -d $name ) {
         $name =~ s/$from//;
-        $name =~ s/^\///;
+        $name =~ s{^/}{};
         push @{ $self->{dirs} }, $name;
     }
     else {
         $name =~ s/$from//;
-        $name =~ s/^\///;
+        $name =~ s{^/}{};
         push @{ $self->{files} }, $name;
     }
 
@@ -128,33 +137,44 @@ sub _wanted {
 
 App::Starter - App Starter
 
-=head1 SYNPSYS
+=head1 SYNOPSIS
 
-
- my $app = App::Starter->new( { config => ' /home/tomyhero/work/App-Starter/conf/config.yml' } )->create;
-
- # or
- # from = 'tmp/a' , replace => { module => 'MyApp' } overwrite config.yml setting.
- my $app = App::Starter->new( { config => ' /home/tomyhero/work/App-Starter/conf/config.yml' ,  from => '/tmp/a' , name => 'my_app' , replace => { module => 'MyApp' } } )->create;
- 
- # or even you can use ~/.app-sterter 
-
- #~/.app-starter
- #|-- conf
- #|   `-- sample.conf
- #`-- skel
- #    `-- sample
- #        |-- bin
- #        |   `-- __app__.pl
- #        `-- lib
- #            `-- __app__
- #                `-- Foo.pm
- my $app = App::Starter->new( { template => 'sample' , name =>'foo'  } )->create;
+    my $app
+        = App::Starter->new(
+        { config => ' /tmp/conf/config.yml' } )
+        ->create;
+    
+    # or
+    # from = 'tmp/a' , replace => { module => 'MyApp' } overwrite config.yml setting.
+    my $app = App::Starter->new(
+        {   config  => '/tmp/conf/config.yml',
+            from    => '/tmp/a',
+            name    => 'my_app',
+            replace => { module => 'MyApp' }
+        }
+    )->create;
+    
+    # or even you can use ~/.app-sterter so taht you do not need to hve from and config options
+    
+    #~/.app-starter
+    #|-- conf
+    #|   `-- sample.conf
+    #`-- skel
+    #    `-- sample
+    #        |-- bin
+    #        |   `-- __app__.pl
+    #        `-- lib
+    #            `-- __app__
+    #                `-- Foo.pm
+    my $app
+        = App::Starter->new( { template => 'sample', name => 'foo' } )->create;
 
 =head1 DESCRIPTION
 
-you can start your application quickly once you craete skelton with this module. This module only does is rename key to value. in your template file , you can set like this  [% key_name %]
+you can start your application quickly once you craete skelton with this module. This module only does is rename key to value. in your template file, you can set like this  [% key_name %]
 which replace with value you set in config. and also you can use __key_name__ format as file or directory name which replace as rule you set at config
+
+I recommend to use ~/.app-starter directory to store your app-starter data
 
 =head1 CONFIG
 
@@ -164,14 +184,14 @@ which replace with value you set in config. and also you can use __key_name__ fo
  ignore  :   # you want to ignore some of files or directories
     - \.svn
     - \.cvs
- replace :   # rule for replace key : value 
+ replace :   # rule for replace key : value
     module : MyApp
 
 =head1 METHODS
 
 =head2 new
 
- constractor
+constractor
 
 =head2 create
 
@@ -179,8 +199,14 @@ create starter dir
 
 =head1 AUTHOR
 
-Tomohiro Teranishi<tomohiro.teranishi@gmail.com>
+Tomohiro Teranishi <tomohiro.teranishi@gmail.com>
 
 dann
+
+=head1 COPYRIGHT AND LISENCE
+
+Copyright (c) Tomohiro Teranishi, All rights reserved.
+
+This module is free software; you can redistribute it and/or modify it under the same terms as Perl itself.  See L<perlartistic>.
 
 =cut
