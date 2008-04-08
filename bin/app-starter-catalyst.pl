@@ -22,7 +22,7 @@ app-starter-catalyst.pl - App::Starter script file for catalyst.
 
 =head1 DESCRIPTION
 
-automaticaly set rule for app app_prefix from --name options.
+automatically set rule for app app_prefix from --name options.
 
 =head1 SEE ALSO
 

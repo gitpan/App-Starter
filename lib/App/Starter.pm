@@ -12,7 +12,7 @@ use Template;
 use IO::All;
 use base qw/Class::Accessor/;
 
-our $VERSION = '0.09';
+our $VERSION = '0.13';
 
 my $DIR = {};
 
@@ -24,9 +24,9 @@ sub create {
 
     # get config
     my $config = {};
+    $config->{replace} = $self->{replace} ? $self->{replace} : {};
+    $config->{ignore}  = $self->{ignore}  ? $self->{ignore}  : [];
     $config->{from}      = $self->{from}      if $self->{from};
-    $config->{replace}   = $self->{replace}   if $self->{replace};
-    $config->{ignore}    = $self->{ignore}    if $self->{ignore};
     $config->{name}      = $self->{name}      if $self->{name};
     $config->{tag_style} = $self->{tag_style} if $self->{tag_style};
     $config->{template}  = $self->{template}  if $self->{template};
@@ -57,7 +57,15 @@ sub create {
     }
 
     if ( $self->{config} ) {
-        $config = { %{ LoadFile( $self->{config} ) }, %{$config}, };
+        my $config_from_file = LoadFile( $self->{config} );
+        %$config = ( %$config_from_file, %$config );
+
+        $config->{replace}
+            = { %{ $config_from_file->{replace} }, %{ $config->{replace} } }
+            if $config_from_file->{replace};
+
+        push @{ $config->{ignore} }, @{ $config_from_file->{ignore} }
+            if $config_from_file->{ignore};
     }
 
     my $to        = getcwd;
@@ -135,7 +143,7 @@ sub _wanted {
 
 =head1 NAME
 
-App::Starter - App Starter
+App::Starter - Application Starter
 
 =head1 SYNOPSIS
 
@@ -171,14 +179,14 @@ App::Starter - App Starter
 
 =head1 DESCRIPTION
 
-you can start your application quickly once you craete skelton with this module. This module only does is rename key to value. in your template file, you can set like this  [% key_name %]
+you can start your application quickly once you create skeleton with this module. This module only does is rename key to value. in your template file, you can set like this  [% key_name %]
 which replace with value you set in config. and also you can use __key_name__ format as file or directory name which replace as rule you set at config
 
 I recommend to use ~/.app-starter directory to store your app-starter data
 
 =head1 CONFIG
 
- name    : my_app  # ${current_dir}/my_app is created as new appication skelton
+ name    : my_app  # ${current_dir}/my_app is created as new appication skeleton
  from    : /foo/bar/my-skell # where to fine your skel setup. if you use ~/.app-starter then you do not need this.
  tag_style : star # SEE ALSO L<Template> TAG_STYLE OPTION
  ignore  :   # you want to ignore some of files or directories
@@ -191,7 +199,7 @@ I recommend to use ~/.app-starter directory to store your app-starter data
 
 =head2 new
 
-constractor
+constructor
 
 =head2 create
 
@@ -203,9 +211,9 @@ Tomohiro Teranishi <tomohiro.teranishi@gmail.com>
 
 dann
 
-=head1 COPYRIGHT AND LISENCE
+=head1 COPYRIGHT AND LICENSE
 
-Copyright (c) Tomohiro Teranishi, All rights reserved.
+Copyright 2008 Tomohiro Teranishi, All rights reserved.
 
 This module is free software; you can redistribute it and/or modify it under the same terms as Perl itself.  See L<perlartistic>.
 
